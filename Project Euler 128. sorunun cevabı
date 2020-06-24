@@ -1,0 +1,61 @@
+function getPrimes(max) {
+    var isPrime = [],
+        primes = {"2" : true},
+        i,
+        num,
+        diff;
+
+    for (i = 3; i < max; i += 2) {
+        isPrime[i] = true;
+    }
+
+    for (i = 3; i < max; i += 2) {
+        if (isPrime[i]) {
+            primes[i] = true;
+
+            diff = 2 * i;
+            num  = i * i;
+
+            while (num < max) {
+                isPrime[num] = false;
+                num += diff;
+            }
+        }
+    }
+    return primes;
+}
+(function () {
+
+    var max = 10000000,
+        isPrime = getPrimes(max),
+        a = 2,
+        b = 8,
+        c = 20,
+        d = 38,
+        diff = 24,
+        pd3s = [1, 2];
+
+    while (pd3s.length < 2000) {
+
+        // check b and c - 1
+        if (isPrime[c - 1 - b]) {
+            // b:
+            if (isPrime[c + 1 - b] && isPrime[d - 1 - b]) {
+                pd3s.push(b);
+            }
+            // c - 1:
+            if (isPrime[c - 1 - a] && isPrime[d - 1 - c]) {
+                pd3s.push(c - 1);
+            }
+        }
+
+        a = b;
+        b = c;
+        c = d;
+
+        d += diff;
+        diff += 6;
+    }
+
+    console.log(pd3s[1999]);
+}());
